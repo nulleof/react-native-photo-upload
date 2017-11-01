@@ -14,7 +14,10 @@ import RNFS from 'react-native-fs'
 export default class PhotoUpload extends React.Component {
   static propTypes = {
     containerStyle: PropTypes.object,
-    photoPickerTitle: PropTypes.string,
+    title: PropTypes.string,
+    cancelButtonTitle: PropTypes.string,
+    takePhotoButtonTitle: PropTypes.string,
+    chooseFromLibraryButtonTitle: PropTypes.string,
     height: PropTypes.number,
     width: PropTypes.number,
     format: PropTypes.string,
@@ -32,7 +35,10 @@ export default class PhotoUpload extends React.Component {
   }
 
   options = {
-    title: this.props.pickerTitle || 'Select Photo',
+    title: this.props.title || 'Select a Photo',
+    cancelButtonTitle: this.props.cancelButtonTitle || 'Cancel',
+    takePhotoButtonTitle: this.props.takePhotoButtonTitle || 'Take Photo…',
+    chooseFromLibraryButtonTitle: this.props.chooseFromLibraryButtonTitle || 'Choose from Library…',
     storageOptions: {
       skipBackup: true,
       path: 'images'
@@ -46,16 +52,17 @@ export default class PhotoUpload extends React.Component {
     ImagePicker.showImagePicker(this.options, async response => {
       // console.log('Response = ', response)
 
-      this.props.onFinishOpening && this.props.onFinishOpening();
-
       if (response.didCancel) {
         console.log('User cancelled image picker')
+        this.props.onFinishOpening && this.props.onFinishOpening();
         return
       } else if (response.error) {
         console.log('ImagePicker Error: ', response.error)
+        this.props.onFinishOpening && this.props.onFinishOpening();
         return
       } else if (response.customButton) {
         console.log('User tapped custom button: ', response.customButton)
+        this.props.onFinishOpening && this.props.onFinishOpening();
         return
       }
 
@@ -84,6 +91,8 @@ export default class PhotoUpload extends React.Component {
       if (this.props.onPhotoSelect) {
         this.props.onPhotoSelect(photoData)
       }
+
+      this.props.onFinishOpening && this.props.onFinishOpening();
     })
   }
 

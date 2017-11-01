@@ -115,17 +115,79 @@ check the docs of each library on how to link manually.
     />
   </PhotoUpload>
  ```
+ 
+ ## Example with ActivityIndicator
+ ```JSX
+  renderLoadingPhoto() {
+    if (!this.state.photoLoading) {
+      return null;
+    }
+
+    return (
+      <ActivityIndicator
+        style={{
+          position:'absolute',
+          top: 0,
+          bottom: 0,
+          left: 0,
+          right: 0,
+          backgroundColor: '#000000AA',
+          borderRadius: 75,
+        }}
+      />
+    );
+  }
+
+  render() {
+    const authUser = UserController.getAuth();
+
+    if (!authUser || !authUser.isValid()) {
+      return null;
+    }
+
+    return (
+    <PhotoUpload
+      onPhotoSelect={(avatar) => {
+        if (avatar) {
+          console.log('xxx', 'Image base64 string: ', avatar);
+        }
+      }}
+      onStartOpening={() => this.setState({ photoLoading: true })}
+      onFinishOpening={() => this.setState({ photoLoading: false })}
+    >
+      <Image
+        style={{
+          paddingVertical: 30,
+          width: 150,
+          height: 150,
+          borderRadius: 75,
+        }}
+        resizeMode='cover'
+        source={{
+          uri: authUser.avatar.src,
+        }}
+      />
+      {this.renderLoadingPhoto()}
+    </PhotoUpload>
+    );
+  }
+```
 
  ## Props
 
  Prop | Type | Description
  -----|------|------------
  containerStyle | Object | Style object for the image container
- photoPickerTitle | String | Title for the image picker prompt, default is 'Select Photo'
+ title | String | Title for the image picker prompt, default is 'Select a Photo'
+ cancelButtonTitle | String | Cancel button text for the image picker prompt, default is 'Cancel'
+ takePhotoButtonTitle | String | Take photo button text for the image picker prompt, default is 'Take Photo…'
+ chooseFromLibraryButtonTitle | String | Choose photo button text for the image picker prompt, default is 'Choose from Library…'
  height | Number | the resized image height, default is 300
  width | Number | the resized image width, default is 300
  format | String | The format desired of the resized image, 'JPEG' or 'PNG' default is 'JPEG'
  quality | Number | The quality of the resized image indicated by a number between 1 and 100, default is 80
  onPhotoSelect | Function | function which takes the base64 string of the new image as parameter
+ onStartOpening | Function | is called when select dialog appears. Can be used for activity indicator
+ onFinishOpening | Function | is called when select dialog disappear or photo finished loading. Can be used for activity indicator
 
 
