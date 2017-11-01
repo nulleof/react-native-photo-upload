@@ -19,7 +19,9 @@ export default class PhotoUpload extends React.Component {
     width: PropTypes.number,
     format: PropTypes.string,
     quality: PropTypes.number,
-    onPhotoSelect: PropTypes.func // returns the base64 string of uploaded photo
+    onPhotoSelect: PropTypes.func, // returns the base64 string of uploaded photo
+    onStartOpening: PropTypes.func,
+    onFinishOpening: PropTypes.func,
   }
 
   state = {
@@ -39,8 +41,12 @@ export default class PhotoUpload extends React.Component {
 
   openImagePicker = () => {
     // get image from image picker
+    this.props.onStartOpening && this.props.onStartOpening();
+
     ImagePicker.showImagePicker(this.options, async response => {
-      console.log('Response = ', response)
+      // console.log('Response = ', response)
+
+      this.props.onFinishOpening && this.props.onFinishOpening();
 
       if (response.didCancel) {
         console.log('User cancelled image picker')
@@ -83,7 +89,7 @@ export default class PhotoUpload extends React.Component {
 
   renderChildren = props => {
     return React.Children.map(props.children, child => {
-      if (child.type === Image && this.state.avatarSource) {
+      if (child && child.type === Image && this.state.avatarSource) {
         return React.cloneElement(child, {
           source: this.state.avatarSource
         })
