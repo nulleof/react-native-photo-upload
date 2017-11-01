@@ -90,7 +90,7 @@ check the docs of each library on how to link manually.
 
  ## Example
 
- ```
+ ```JSX
   import { Image } from 'react-native'
   import PhotoUpload from 'react-native-photo-upload'
 
@@ -139,12 +139,6 @@ check the docs of each library on how to link manually.
   }
 
   render() {
-    const authUser = UserController.getAuth();
-
-    if (!authUser || !authUser.isValid()) {
-      return null;
-    }
-
     return (
     <PhotoUpload
       onPhotoSelect={(avatar) => {
@@ -164,7 +158,7 @@ check the docs of each library on how to link manually.
         }}
         resizeMode='cover'
         source={{
-          uri: authUser.avatar.src,
+          uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
         }}
       />
       {this.renderLoadingPhoto()}
