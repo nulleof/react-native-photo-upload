@@ -83,26 +83,13 @@ export default class PhotoUpload extends React.Component {
       // convert image back to base64 string
       const photoData = await RNFS.readFile(filePath, 'base64')
       let source = { uri: resizedImageUri.uri }
-      this.setState({
-        avatarSource: source
-      })
 
       // handle photo in props functions as data string
       if (this.props.onPhotoSelect) {
-        this.props.onPhotoSelect(photoData)
+        this.props.onPhotoSelect(photoData, source)
       }
 
       this.props.onFinishOpening && this.props.onFinishOpening();
-    })
-  }
-
-  renderChildren = props => {
-    return React.Children.map(props.children, child => {
-      if (child && child.type === Image && this.state.avatarSource) {
-        return React.cloneElement(child, {
-          source: this.state.avatarSource
-        })
-      } else return child
     })
   }
 
@@ -110,7 +97,7 @@ export default class PhotoUpload extends React.Component {
     return (
       <View style={[styles.container, this.props.containerStyle]}>
         <TouchableOpacity onPress={this.openImagePicker}>
-          {this.renderChildren(this.props)}
+          {this.props.children}
         </TouchableOpacity>
       </View>
     )

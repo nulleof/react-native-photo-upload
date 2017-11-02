@@ -95,10 +95,12 @@ check the docs of each library on how to link manually.
   import PhotoUpload from 'react-native-photo-upload'
 
   <PhotoUpload
-    onPhotoSelect={avatar => {
+    onPhotoSelect={(avatar, imgSource) => {
       if (avatar) {
         console.log('Image base64 string: ', avatar)
       }
+      
+      this.setState({ imgSrc: imgSource });
     }}
   >
     <Image
@@ -109,9 +111,7 @@ check the docs of each library on how to link manually.
         borderRadius: 75
       }}
       resizeMode='cover'
-      source={{
-        uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
-      }}
+      source={this.state.imgSrc}
     />
   </PhotoUpload>
  ```
@@ -141,10 +141,11 @@ check the docs of each library on how to link manually.
   render() {
     return (
     <PhotoUpload
-      onPhotoSelect={(avatar) => {
+      onPhotoSelect={(avatar, imgSource) => {
         if (avatar) {
           console.log('xxx', 'Image base64 string: ', avatar);
         }
+        this.setState({ imgSrc: imgSource });
       }}
       onStartOpening={() => this.setState({ photoLoading: true })}
       onFinishOpening={() => this.setState({ photoLoading: false })}
@@ -157,9 +158,7 @@ check the docs of each library on how to link manually.
           borderRadius: 75,
         }}
         resizeMode='cover'
-        source={{
-          uri: 'https://www.sparklabs.com/forum/styles/comboot/theme/images/default_avatar.jpg'
-        }}
+        source={this.state.imgSrc}
       />
       {this.renderLoadingPhoto()}
     </PhotoUpload>
