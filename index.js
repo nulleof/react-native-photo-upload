@@ -13,7 +13,7 @@ import RNFS from 'react-native-fs'
 
 export default class PhotoUpload extends React.Component {
   static propTypes = {
-    containerStyle: PropTypes.object,
+    containerStyle: View.propTypes.style,
     title: PropTypes.string,
     cancelButtonTitle: PropTypes.string,
     takePhotoButtonTitle: PropTypes.string,
