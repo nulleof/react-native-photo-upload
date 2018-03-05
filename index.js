@@ -5,7 +5,8 @@ import {
   Image,
   StyleSheet,
   TouchableOpacity,
-  Platform
+  Platform,
+  InteractionManager,
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
@@ -25,6 +26,13 @@ export default class PhotoUpload extends React.Component {
     onPhotoSelect: PropTypes.func, // returns the base64 string of uploaded photo
     onStartOpening: PropTypes.func,
     onFinishOpening: PropTypes.func,
+    isTouchable: PropTypes.bool,
+    refer: PropTypes.func,
+  }
+
+  static defaultProps = {
+    isTouchable: true,
+    refer: () => {},
   }
 
   state = {
@@ -43,6 +51,12 @@ export default class PhotoUpload extends React.Component {
       skipBackup: true,
       path: 'images'
     }
+  }
+
+  componentDidMount() {
+    InteractionManager.runAfterInteractions(() => {
+      this.props.refer(this);
+    });
   }
 
   openImagePicker = () => {
@@ -94,11 +108,16 @@ export default class PhotoUpload extends React.Component {
   }
 
   render () {
+    let ContainerComponent = TouchableOpacity;
+    if (!this.props.isTouchable) {
+      ContainerComponent = View;
+    }
+
     return (
       <View style={[styles.container, this.props.containerStyle]}>
-        <TouchableOpacity onPress={this.openImagePicker}>
+        <ContainerComponent onPress={this.openImagePicker}>
           {this.props.children}
-        </TouchableOpacity>
+        </ContainerComponent>
       </View>
     )
   }
