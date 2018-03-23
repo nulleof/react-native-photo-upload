@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Platform,
   InteractionManager,
+  ViewPropTypes,
 } from 'react-native'
 import ImagePicker from 'react-native-image-picker'
 import ImageResizer from 'react-native-image-resizer'
@@ -14,7 +15,7 @@ import RNFS from 'react-native-fs'
 
 export default class PhotoUpload extends React.Component {
   static propTypes = {
-    containerStyle: View.propTypes.style,
+    containerStyle: ViewPropTypes.style,
     title: PropTypes.string,
     cancelButtonTitle: PropTypes.string,
     takePhotoButtonTitle: PropTypes.string,
